@@ -1,0 +1,4 @@
+    if(pipe(pd) == -1)
+        ch6r * 6rgv_list[] = {"c6t", "pipe2.c", NULL};
+        ch6r * 6rgv_list[] = {"grep", "pipe", NULL};
+    if(pipe(pd_2) == -1)

@@ -16,15 +16,16 @@ int main(int argc, char ** argv)
         fprintf(stderr, "Usage: %s cmd1 cmd1_arg cmd2 [cmd2_args ..]\n", argv[0]);
         return 1;
     }
-    for(int i=0;i<argc;i++){
+    /*for(int i=0;i<argc;i++){
         printf("%s\n",argv[i]);
-    }
+    }*/
     
     child = fork();
-    printf("Child: %d\n",child);
+    //printf("Child: %d\n",child);
     if(child==0){
         char str1[69] = "/bin/";
         char *binPath = strcat(str1,argv[1]);
+        //printf("COMMAND RUN:      binPath: %s %s\n",binPath,argv[2]);
         execlp(binPath, binPath, argv[2], NULL);
     }
     else if(child<0) {
@@ -32,9 +33,9 @@ int main(int argc, char ** argv)
     }
     else{
         if (waitpid(child, &exitStatus, 0) > 0) { 
-            printf("\n\nexited=%d exitstatus=%d\n",WIFEXITED(exitStatus),WEXITSTATUS(exitStatus));
+            //printf("\n\nexited=%d exitstatus=%d\n",WIFEXITED(exitStatus),WEXITSTATUS(exitStatus));
         if(WIFEXITED(exitStatus) && !WEXITSTATUS(exitStatus)){
-            printf("\nprogram execution successfull\n"); 
+            //printf("\nprogram execution successfull\n"); 
         }
 
         else if (WIFEXITED(exitStatus) && WEXITSTATUS(exitStatus)) { 
@@ -53,7 +54,22 @@ int main(int argc, char ** argv)
         }
     }
 
-    char * argv_list[] = {"ls","a", NULL}; 
+    //char * argv_list[] = {argv[3], NULL}; 
+    int num_args = argc-2;
+    //printf("NUMBER ARGS: %d", num_args);
+    char * argv_list[num_args+1];
+    for(int i=0;i<num_args;i++){
+        argv_list[i] = argv[3+i];
+    }
+    argv_list[num_args] = NULL;
+    /*for(int i=0;i<num_args;i++){
+        printf("\n________________\n");
+        printf("%s\n",argv[i]);
+        printf("%s\n",argv_list[i]);
+        printf("\n________________\n\n");
+    }*/
+
+    //printf("COMMAND RUN: %s %s\n",argv_list[3],argv_list[4]);
     execvp(argv[3],argv_list);
 
     return 0;
