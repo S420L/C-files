@@ -70,6 +70,24 @@ typedef struct program_tag {
 void start_program(Program *programs, int num_programs, int cur) 
 {
     // TODO
+    /*int fd[1][2];
+    for(int i = 0;i<2;i++){
+        if(pipe(fd[i])<0){
+            die("pipe() failed");
+        }
+    }*/
+    //printf("CURRENT: %i\n",cur);
+    //printf("programs: %p\n",programs);
+    //printf("programs[0]: %p\n",&programs[0]);
+    //printf("&programs[0].argc: %p\n",&programs[0].argc);
+    printf("programs[%i].argc: %i\n",cur,programs[cur].argc);
+    printf("%s  ",programs[cur].argv[1]);
+    printf("\n\nCURRENT PROGRAM:  ");
+    for(int i=0;i<programs[cur].argc;i++){
+        printf("%s  ",programs[cur].argv[i]);
+    }
+    printf("\n\n");
+
 }
 
 /* Wait on a program. 
@@ -185,12 +203,18 @@ int main(int argc, char **argv)
     // Prepare programs and their arguments
     num_programs = parse_command_line(programs, MAX_NUM_PROGRAMS, argc, argv); 
 
+    printf("\n\n");
+    for(int i=0;i<programs->argc;i++){
+        printf("Arg[%i]:   %s\n",i,programs[i].argv[2]);
+    }
+    printf("\n\n");
+
     // Prepare pipes
     prepare_pipes(programs, num_programs);
 
     // spawn children
     for (int i = 0; i < num_programs; i ++) {
-        fprintf(stderr, "Starting program %d:%s\n", i, programs[i].argv[0]);
+        //fprintf(stderr, "Starting program %d:%s\n", i, programs[i].argv[0]);
         start_program(programs, num_programs, i);
     }
 
