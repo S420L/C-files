@@ -30,7 +30,9 @@ typedef struct node_tag {
 //return a pointer to the created node
 node * create_node(THost host) 
 {
-
+	node* nodie;
+	nodie->host;
+	nodie->
 }
 
 //add_first() should add to the beginning of a linked list
@@ -95,7 +97,8 @@ int summary(THost hosts[], int m)
     	printf("%lf %lf %lf\n", (double)S_n/(S_n + I_n + R_n), 
 		(double)I_n/(S_n + I_n + R_n), (double)R_n/(S_n + I_n + R_n));
 	}
-	return I_n > 0;
+	//return I_n > 0;
+	return 0;
 }
 
 // one_round 
@@ -132,10 +135,10 @@ int one_round(THost *hosts, int m, node *p_arr[], int n_arr, int k, int T)
 		//TODO: update locations for all hosts
 		switch(r)
 		{
-			case 0: hosts[i].y = 
-			case 1: hosts[i].x =
-			case 2: hosts[i].y =
-			case 3: hosts[i].x =
+			case 0: hosts[i].y = 0; //edit
+			case 1: hosts[i].x = 0; //edit
+			case 2: hosts[i].y = 0; //edit
+			case 3: hosts[i].x = 0; //edit
 		}
 
 		//buid linked list for I hosts
@@ -178,6 +181,8 @@ int main(int argc, char *argv[])
 	hosts[0].y = 0;
 	hosts[0].t = 0;
 	hosts[0].type = I;
+	
+	printf("\nWICKS DEBUGGING BEGIN!\n");
 
 	for(int i = 1; i < m; i ++)
 	{
@@ -187,6 +192,12 @@ int main(int argc, char *argv[])
 		hosts[i].t = 0;
 		hosts[i].type = S;		
 	}
+
+	printf("\n______STARTING POSITION:______");
+	for(int i=0;i<m;i++){
+		printf("\nhost #%i:   %i    %i  ", i, hosts[i].x, hosts[i].y);
+	}
+	printf("\n");
 
 	//initialize linked lists
 	node *p_arr[N];

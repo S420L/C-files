@@ -5,6 +5,6 @@
     "command-runner.commands": {
         "echo workspaceFolder": "echo ${workspaceFolder}",
         "gcc c": "gcc '${file}' -o a && ./a",
-        "make c": "make && ./ex-factorial",
+        "make c": "make && ./printing",
         },
 }

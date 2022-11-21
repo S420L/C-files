@@ -119,7 +119,7 @@ void    child_main(int fdp[], int fdc[], int seed)
 
     gmn_init(&gmn, seed);
 
-    printf("CHOSEN RANDOM NUMBER!!! :   %i\n\n",(&gmn)->v);
+    //printf("CHOSEN RANDOM NUMBER!!! :   %i\n\n",(&gmn)->v);
 
     int max = gmn_get_max(); 
     write(fdc[1], &max, sizeof(max));
@@ -127,9 +127,9 @@ void    child_main(int fdp[], int fdc[], int seed)
     int guess;
     while(read(fdp[0], &guess, sizeof(int))){
         int result;
-        printf("PARENT GUESSED: %i\n",guess);
+        //printf("PARENT GUESSED: %i\n",guess);
         result = gmn_check(&gmn, guess);
-        printf("ACTUAL RESULT: %i\n", result);
+        //printf("ACTUAL RESULT: %i\n", result);
         //write(fdc[1], &result, sizeof(result));
         if(result==0){
             result = (&gmn)->num_attempts;
@@ -162,7 +162,7 @@ void    child_main(int fdp[], int fdc[], int seed)
 
 int main(int argc, char *argv[])
 {
-    printf("\n\nparent pid: %i\n\n", getpid());
+    //printf("\n\nparent pid: %i\n\n", getpid());
 
     int seed = 3100;
     int demo = 0;
@@ -207,7 +207,7 @@ int main(int argc, char *argv[])
 
     pid_t pid;
     pid = fork();
-    printf("\n\nChild pid: %i\n\n",pid);
+    //printf("\n\nChild pid: %i\n\n",pid);
 
     if (pid < 0)
         die("fork() failed.");
@@ -240,7 +240,7 @@ int main(int argc, char *argv[])
         printf("My guess: %d\n", guess);
         write(fdp[1], &guess, sizeof(guess));
         read(fdc[0], &result, sizeof(result));
-        printf("\n\nChild returned: %i\n\n", result);
+        //printf("\n\nChild returned: %i\n\n", result);
         close(fdc[1]);
         // TODO
         //     send guess to the child
@@ -252,8 +252,8 @@ int main(int argc, char *argv[])
             max = guess - 1;
         else
             printf("It took you %d attempt(s) to guess the number %d.\n",result,guess);
-        printf("MAX: %i\n",max);
-        printf("MIN: %i\n",min);
+        //printf("MAX: %i\n",max);
+        //printf("MIN: %i\n",min);
     }  while (result>=-1 && result<=1); //while (counter<=9); 
 
     // flush stdout buffer

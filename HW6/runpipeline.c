@@ -70,24 +70,42 @@ typedef struct program_tag {
 void start_program(Program *programs, int num_programs, int cur) 
 {
     // TODO
-    /*int fd[1][2];
-    for(int i = 0;i<2;i++){
-        if(pipe(fd[i])<0){
-            die("pipe() failed");
-        }
-    }*/
-    //printf("CURRENT: %i\n",cur);
-    //printf("programs: %p\n",programs);
-    //printf("programs[0]: %p\n",&programs[0]);
-    //printf("&programs[0].argc: %p\n",&programs[0].argc);
-    printf("programs[%i].argc: %i\n",cur,programs[cur].argc);
-    printf("%s  ",programs[cur].argv[1]);
     printf("\n\nCURRENT PROGRAM:  ");
     for(int i=0;i<programs[cur].argc;i++){
         printf("%s  ",programs[cur].argv[i]);
     }
-    printf("\n\n");
 
+    char* argv_list[programs[cur].argc+1];
+    for(int i=0;i<programs[cur].argc;i++){
+        argv_list[i] = programs[cur].argv[i];
+    }
+    argv_list[programs[cur].argc] = NULL;
+    printf("ARRAY BEING SENT TO EXEC:");
+    for(int i=0;i<programs[cur].argc+1;i++){
+        printf(" %s",argv_list[i]);
+    }
+
+    int fd[2];
+    if(pipe(fd)<0){
+        die("pipe() failed");
+    }
+    pid_t pid1 = fork();
+    if(pid1<0){
+        die("fork() failed");
+    }
+    programs[cur].pid = pid1;
+    if(pid1==0){
+
+    int fd_in = dup2(fd[0],0);
+    close(fd[0]);
+    int fd_out = dup2(fd[1], 1);
+    programs[cur].fd_in = fd_in;
+    programs[cur].fd_out = fd_out;
+    
+    execvp(argv_list[0], argv_list);
+    close(fd[1]);
+    exit(0);
+    }
 }
 
 /* Wait on a program. 
@@ -108,7 +126,7 @@ int wait_on_program(Program *prog)
     if (prog->pid < 0)
         return -1;
 
-    // TODO
+    waitpid(prog->pid,NULL,0);
     return WEXITSTATUS(exitStatus);
 }
 
